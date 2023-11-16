@@ -1,8 +1,24 @@
 import React from 'react';
 import Text from '../Forms/Text';
 import TxtForm from '../Forms/TxtForm';
+import MapCoordinates from './MapCoordinates';
 
 const Main = () => {
+  const testCoordinates = [
+    {
+      "lat": -22.336242338753255,
+      "lng": -49.06343452478047
+    },
+    {
+      "lat": -22.3299077,
+      "lng": -49.0739861
+    },
+    {
+      "lat": -22.3247475,
+      "lng": -49.0327961
+    }
+  ]
+
   return (
     <section className="animeLeft">
       <div className="container">
@@ -100,6 +116,10 @@ const Main = () => {
           txt="Sim, em 2010 já realizei uma cirurgia bal bla bla da Silva teste"
         />
         <TxtForm titulo="Comorbidade:" txt="DOENÇA RENAL CRÔNICA" />
+
+        <hr />
+        <h2 style={{ color: '#666' }}>Localização</h2>
+        <MapCoordinates longitude={testCoordinates[1].lng} latitude={testCoordinates[1].lat}></MapCoordinates>
       </div>
     </section>
   );
