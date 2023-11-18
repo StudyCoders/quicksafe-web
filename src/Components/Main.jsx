@@ -21,7 +21,7 @@ const Main = () => {
   ];
 
   return (
-    <section className="animeLeft">
+    <section className="animeLeft p-4" style={{ backgroundColor: '#f6f6f6' }}>
       <div className="container">
         <div className="row mb-5">
           <label htmlFor="selectBusca" className="fw-bold">
@@ -47,6 +47,20 @@ const Main = () => {
               </option>
               <option value="3">Three</option>
             </select>
+          </div>
+          <div className="col-12 mt-2">
+            <div className="form-check form-switch">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                role="switch"
+                id="checkContato"
+                onChange={() => setContato(!contato)}
+              />
+              <label className="form-check-label" htmlFor="checkContato">
+                Pesquisar pelo contato
+              </label>
+            </div>
           </div>
         </div>
 
