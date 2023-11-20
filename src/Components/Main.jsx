@@ -161,11 +161,14 @@ const Main = () => {
 
         <hr />
 
-        <h2 style={{ color: '#666' }}>Localização</h2>
-        <MapCoordinates
-          longitude={testCoordinates[1].lng}
-          latitude={testCoordinates[1].lat}
-        ></MapCoordinates>
+        <div className="col">
+          <h2 style={{ color: '#666' }}>Localização</h2>
+          <p>Última localização - 18/11/2023 18:05:36</p>
+          <MapCoordinates
+            longitude={testCoordinates[1].lng}
+            latitude={testCoordinates[1].lat}
+          ></MapCoordinates>
+        </div>
       </div>
     </section>
   );
