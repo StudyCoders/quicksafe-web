@@ -20,6 +20,23 @@ const Main = () => {
     },
   ];
 
+  async function fetchDados(acao, body) {
+    const url = `https://tecnoatualizados.com/projetos/tcc/api/metodos/formWeb.php?acao=${acao}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    const content = await response.json();
+
+    console.log(content);
+  }
+
+  fetchDados('select', { campo: 'a', contato: 1 });
+  fetchDados('formulario', { tipo: 'C', codigo: 9 });
+
   return (
     <section className="animeLeft p-4" style={{ backgroundColor: '#f6f6f6' }}>
       <div className="container">
