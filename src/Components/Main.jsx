@@ -20,6 +20,23 @@ const Main = () => {
     },
   ];
 
+  async function fetchDados(acao, body) {
+    const url = `https://tecnoatualizados.com/projetos/tcc/api/metodos/formWeb.php?acao=${acao}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    const content = await response.json();
+
+    console.log(content);
+  }
+
+  fetchDados('select', { campo: 'a', contato: 1 });
+  fetchDados('formulario', { tipo: 'C', codigo: 9 });
+
   return (
     <section className="animeLeft p-4" style={{ backgroundColor: '#f6f6f6' }}>
       <div className="container">
@@ -34,7 +51,9 @@ const Main = () => {
               Número do telefone
             </span>{' '}
             ou{' '}
-            <span className="text-decoration-underline">Nome do paciente</span>
+            <span className="text-decoration-underline">
+              Nome do solicitante
+            </span>
           </label>
           <div className="col">
             <select className="form-select" id="selectBusca">
@@ -65,7 +84,7 @@ const Main = () => {
         </div>
 
         <div className="col">
-          <h2 style={{ color: '#666' }}>Informações pessoais</h2>
+          <h2 style={{ color: '#666' }}>Informações do Usuário</h2>
           <div className="row mb-3">
             <div className="col-4">
               <Text titulo="Código do Usuário:" txt="117" />
@@ -86,6 +105,38 @@ const Main = () => {
             </div>
             <div className="col-4">
               <Text titulo="Sexo:" txt="Masculino" />
+            </div>
+          </div>
+
+          <div className="col">
+            <h3 style={{ color: '#666' }}>Endereço</h3>
+            <div className="row mb-3">
+              <div className="col-3">
+                <Text titulo="Telefone:" txt="-" />
+              </div>
+              <div className="col-3">
+                <Text titulo="Celular:" txt="(11) 99999-9999" />
+              </div>
+              <div className="col-3">
+                <Text titulo="Estado:" txt="SÃO PAULO" />
+              </div>
+              <div className="col-3">
+                <Text titulo="Cidade:" txt="BAURU" />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-3">
+                <Text titulo="CEP:" txt="17052-080" />
+              </div>
+              <div className="col-3">
+                <Text titulo="Endereço:" txt="Av. Getúlio Vargas, 10-130" />
+              </div>
+              <div className="col-3">
+                <Text titulo="Bairro:" txt="Jardim América" />
+              </div>
+              <div className="col-3">
+                <Text titulo="Complemento:" txt="Restaurante" />
+              </div>
             </div>
           </div>
         </div>
@@ -112,41 +163,9 @@ const Main = () => {
         )}
 
         <div className="col">
-          <h2 style={{ color: '#666' }}>Endereços</h2>
-          <div className="row mb-3">
-            <div className="col-3">
-              <Text titulo="Telefone:" txt="-" />
-            </div>
-            <div className="col-3">
-              <Text titulo="Celular:" txt="(11) 99999-9999" />
-            </div>
-            <div className="col-3">
-              <Text titulo="Estado:" txt="SÃO PAULO" />
-            </div>
-            <div className="col-3">
-              <Text titulo="Cidade:" txt="BAURU" />
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col-3">
-              <Text titulo="CEP:" txt="17052-080" />
-            </div>
-            <div className="col-3">
-              <Text titulo="Endereço:" txt="Av. Getúlio Vargas, 10-130" />
-            </div>
-            <div className="col-3">
-              <Text titulo="Bairro:" txt="Jardim América" />
-            </div>
-            <div className="col-3">
-              <Text titulo="Complemento:" txt="Restaurante" />
-            </div>
-          </div>
-        </div>
-
-        <hr />
-
-        <div className="col">
-          <h2 style={{ color: '#666' }}>Formulário</h2>
+          <h2 style={{ color: '#666' }}>
+            Formulário do {contato ? 'Contato' : 'Usuário'}
+          </h2>
           <TxtForm titulo="Plano de saúde:" txt="UNIMED" />
           <TxtForm titulo="Possui algum tipo de alergia?" txt="Não" />
           <TxtForm titulo="Toma algum medicamento contínuo?" txt="Não" />
@@ -159,11 +178,14 @@ const Main = () => {
 
         <hr />
 
-        <h2 style={{ color: '#666' }}>Localização</h2>
-        <MapCoordinates
-          longitude={testCoordinates[1].lng}
-          latitude={testCoordinates[1].lat}
-        ></MapCoordinates>
+        <div className="col">
+          <h2 style={{ color: '#666' }}>Localização</h2>
+          <p>Última localização - 18/11/2023 18:05:36</p>
+          <MapCoordinates
+            longitude={testCoordinates[1].lng}
+            latitude={testCoordinates[1].lat}
+          ></MapCoordinates>
+        </div>
       </div>
     </section>
   );
