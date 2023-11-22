@@ -1,10 +1,13 @@
-import React from 'react';
-import Text from '../Forms/Text';
-import TxtForm from '../Forms/TxtForm';
-import MapCoordinates from './MapCoordinates';
+import React from "react";
+import Text from "../Forms/Text";
+import TxtForm from "../Forms/TxtForm";
+import MapCoordinates from "./MapCoordinates";
+import AsyncSelect from "react-select/async";
 
 const Main = () => {
   const [contato, setContato] = React.useState(null);
+  const [formData, setFormData] = React.useState(null);
+
   const testCoordinates = [
     {
       lat: -22.336242338753255,
@@ -23,49 +26,62 @@ const Main = () => {
   async function fetchDados(acao, body) {
     const url = `https://tecnoatualizados.com/projetos/tcc/api/metodos/formWeb.php?acao=${acao}`;
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     });
-    const content = await response.json();
 
-    console.log(content);
+    return await response.json();
   }
 
-  fetchDados('select', { campo: 'a', contato: 1 });
-  fetchDados('formulario', { tipo: 'C', codigo: 9 });
+  async function loadFormData(dados) {
+    if ( dados ) {
+      let { tipo, codigo } = dados;
+      const data = await fetchDados("formulario", { tipo, codigo });
+      setFormData(data);
+    }
+  }
+
+  const loadOptions = async (inputValue) => {
+    if (inputValue) {
+      const data = await fetchDados("select", { campo: inputValue, contato });
+
+      return data.map((item) => {
+        const { codigo, nome, cpf, tipo } = item;
+        const flagTipo = tipo === "U" ? "usuário" : "contato";
+        const cpfPart = cpf ? ` - ${cpf}` : '';
+  
+        return {
+          value: codigo,
+          label: `Código ${flagTipo}: ${codigo} - ${nome}${cpfPart}`,
+          ...item
+        };
+      });
+    }
+  };
 
   return (
-    <section className="animeLeft p-4" style={{ backgroundColor: '#f6f6f6' }}>
+    <section className="animeLeft p-4" style={{ backgroundColor: "#f6f6f6" }}>
       <div className="container">
         <div className="row mb-5">
           <label htmlFor="selectBusca" className="fw-bold">
-            Pesquise pelo{' '}
+            Pesquise pelo{" "}
             <span className="text-decoration-underline">Código do usuário</span>
-            ,{' '}
+            ,{" "}
             <span className="text-decoration-underline">Código do contato</span>
-            , <span className="text-decoration-underline">CPF</span>,{' '}
+            , <span className="text-decoration-underline">CPF</span>,{" "}
             <span className="text-decoration-underline">
               Número do telefone
-            </span>{' '}
-            ou{' '}
+            </span>{" "}
+            ou{" "}
             <span className="text-decoration-underline">
               Nome do solicitante
             </span>
           </label>
           <div className="col">
-            <select className="form-select" id="selectBusca">
-              <option>Open this select menu</option>
-              <option value="1">
-                Código usuário: 117 - Caio Arai - 111.111.111-11
-              </option>
-              <option value="2">
-                Código contato: 117 - Lucas H - 111.111.111-11
-              </option>
-              <option value="3">Three</option>
-            </select>
+            <AsyncSelect isClearable loadOptions={loadOptions} onChange={loadFormData} placeholder="Comece a digitar..." />
           </div>
           <div className="col-12 mt-2">
             <div className="form-check form-switch">
@@ -83,8 +99,17 @@ const Main = () => {
           </div>
         </div>
 
+        {
+          /* Apenas para exemplo */
+          formData ? (
+            <div className="row mb-3">
+              {JSON.stringify(formData)}
+            </div>
+          ) : null
+        }
+
         <div className="col">
-          <h2 style={{ color: '#666' }}>Informações do Usuário</h2>
+          <h2 style={{ color: "#666" }}>Informações do Usuário</h2>
           <div className="row mb-3">
             <div className="col-4">
               <Text titulo="Código do Usuário:" txt="117" />
@@ -109,7 +134,7 @@ const Main = () => {
           </div>
 
           <div className="col">
-            <h3 style={{ color: '#666' }}>Endereço</h3>
+            <h3 style={{ color: "#666" }}>Endereço</h3>
             <div className="row mb-3">
               <div className="col-3">
                 <Text titulo="Telefone:" txt="-" />
@@ -145,7 +170,7 @@ const Main = () => {
 
         {contato && (
           <div className="col">
-            <h2 style={{ color: '#666' }}>Informações do Contato</h2>
+            <h2 style={{ color: "#666" }}>Informações do Contato</h2>
             <div className="row mb-3">
               <div className="col-4">
                 <Text titulo="Código do Contato:" txt="2" />
@@ -163,8 +188,8 @@ const Main = () => {
         )}
 
         <div className="col">
-          <h2 style={{ color: '#666' }}>
-            Formulário do {contato ? 'Contato' : 'Usuário'}
+          <h2 style={{ color: "#666" }}>
+            Formulário do {contato ? "Contato" : "Usuário"}
           </h2>
           <TxtForm titulo="Plano de saúde:" txt="UNIMED" />
           <TxtForm titulo="Possui algum tipo de alergia?" txt="Não" />
@@ -179,7 +204,7 @@ const Main = () => {
         <hr />
 
         <div className="col">
-          <h2 style={{ color: '#666' }}>Localização</h2>
+          <h2 style={{ color: "#666" }}>Localização</h2>
           <p>Última localização - 18/11/2023 18:05:36</p>
           <MapCoordinates
             longitude={testCoordinates[1].lng}
