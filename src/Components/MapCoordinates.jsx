@@ -23,7 +23,7 @@ const MapCoordinates = ({ longitude, latitude }) => {
     const marca = new mapboxgl.Marker()
       .setLngLat([lng, lat])
       .addTo(map.current);
-  });
+  }, [longitude, latitude]);
 
   return (
     <div>

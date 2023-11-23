@@ -6,6 +6,11 @@
   margin: 22px 0;
 }
 
+.subtitulo{
+  color: #666;
+  margin-bottom: 1rem;
+}
+
 .animeLeft {
   opacity: 0;
   transform: translateX(-20px);
